@@ -15,7 +15,8 @@ app.use(morgan("tiny"));
 // Base de dados
 connectDB();
 
-
+//rotas
+app.use("/api", require("./routes/auth"));
 
 
 
