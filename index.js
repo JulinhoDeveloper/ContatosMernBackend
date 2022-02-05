@@ -3,10 +3,7 @@ require('dotenv').config();
 const morgan = require("morgan");
 const {connectDB}  = require("./config/db");
 // const  auth = require("./middlewares/auth");
-
 const app = express();
-
-
 
 //middlewares
 app.use(express.json());
