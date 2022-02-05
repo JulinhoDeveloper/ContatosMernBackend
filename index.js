@@ -18,7 +18,7 @@ connectDB();
 //         {  ...req.user._doc });
 // });
 app.use("/api", require("./routes/auth"));
-
+app.use("/api", require("./routes/contato"));
 
 
 

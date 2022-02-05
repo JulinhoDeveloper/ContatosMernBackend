@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Joi = require("Joi");
 
 const ContatoSchema = new mongoose.Schema({
     name: {
@@ -11,6 +12,7 @@ const ContatoSchema = new mongoose.Schema({
     },
     email: {
         type: String,
+        unique:true,
         required: [true, "O email é obrigatório"],
     },
     phone: {
@@ -25,4 +27,16 @@ const ContatoSchema = new mongoose.Schema({
 
 const Contato = new mongoose.model("Contato", ContatoSchema);
 
-module.exports = Contato;
+const validarContato = (data) =>{
+    const schema = Joi.object({
+        name: Joi.string().min(4).max(50).required(),
+        adress: Joi.string().min(4).max(100).required(),
+       email:  Joi.string().email().required(),
+       phone: Joi.number().min(7).max(10000000000).required(),
+    });
+};
+
+module.exports = {
+    validarContato,
+    Contato,
+  }
