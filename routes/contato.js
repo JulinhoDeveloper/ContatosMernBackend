@@ -43,6 +43,34 @@ router.get("/meuscontatos", auth, async (req,res)=>{
      }
 });
 
+//atualizar contatos
+router.put("/update", auth, async (req,res)=>{
+    const { id } = req.body;
+   
+    if(!id) return res.status(400).json({error: "id não cadastrado"});
+   
+   if(!mongoose.isValidObjectId(id))  return res.status(400).json({error: "digite um id válido"});
+       try{
+          const contato = await Contato.findOne( { _id: id });
+   
+          if(req.user._id.toString()  !== contato.postedBy._id.toString() ) 
+           return res.status(401).json({error: "você não pode alterar contato de outros usuários" });
+
+           const atualizarDados = { ...req.body, id: undefined };
+
+           const result = await Contato.findByIdAndUpdate(id , atualizarDados ,{
+               new: true
+           });
+           return res.status(200).json({
+            ...result._doc });
+       } catch (err){
+            console.log(err)
+        }
+   });
+
+
+
+
 //excluir contatos
 router.delete("/delete/:id", auth, async (req,res)=>{
  const { id } = req.params;
