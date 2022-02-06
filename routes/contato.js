@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const  {validarContato, Contato} = require("../models/Contatos");
 const auth = require("../middlewares/auth");
+
+//criar contato
 router.post("/contato", auth, async (req,res)=>{
     const  error  = validarContato(req.body);
 
@@ -24,6 +26,18 @@ router.post("/contato", auth, async (req,res)=>{
            });
 
      } catch (err){
+         console.log(err)
+     }
+});
+
+//ver meus contatos
+router.get("/meuscontatos", auth, async (req,res)=>{
+ 
+    try{
+        const meusContatos = await Contato.find({ postedBy: req.user._id }).populate("postedBy","-password");
+
+        return res.status(200).json({ contatos :meusContatos})
+    } catch (err){
          console.log(err)
      }
 });
